@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apply for a Loan — Flying Fish Capital</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+  /* ── APPLY PAGE ── */
+  .apply-hero {
+    background: var(--navy);
+    padding: 110px 5% 50px;
+    position: relative; overflow: hidden;
+  }
+  .apply-hero-circle {
+    position: absolute; border-radius: 50%;
+    border: 1px solid rgba(13,184,164,0.10);
+  }
+  .apply-hero-circle:nth-child(1){ width:500px;height:500px;top:-200px;right:-80px; }
+  .apply-hero-circle:nth-child(2){ width:800px;height:800px;top:-350px;right:-230px; }
+  .apply-hero-inner { position:relative;z-index:2;max-width:860px; }
+  .breadcrumb { display:flex;align-items:center;gap:8px;font-size:13px;color:rgba(255,255,255,0.4);margin-bottom:24px; }
+  .breadcrumb a { color:var(--teal);text-decoration:none; }
+  .apply-hero h1 { font-family:'Playfair Display',serif;font-size:clamp(28px,4vw,46px);font-weight:700;color:#fff;margin-bottom:10px; }
+  .apply-hero p  { font-size:16px;font-weight:300;color:rgba(255,255,255,0.55);max-width:520px;line-height:1.65; }
+
+  /* progress bar */
+  .progress-bar { display:flex;align-items:center;margin-top:36px;gap:0; }
+  .pb-step { display:flex;align-items:center;gap:8px;font-size:13px;font-weight:500;color:rgba(255,255,255,0.3); }
+  .pb-step.active { color:var(--teal); }
+  .pb-step.done   { color:rgba(255,255,255,0.5); }
+  .pb-num { width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600; }
+  .pb-step.active .pb-num { background:var(--teal);border-color:var(--teal);color:var(--navy); }
+  .pb-step.done   .pb-num { background:rgba(13,184,164,0.15);border-color:rgba(13,184,164,0.3);color:var(--teal); }
+  .pb-line { flex:1;height:1px;background:rgba(255,255,255,0.08);margin:0 14px;max-width:52px; }
+
+  /* ── LAYOUT ── */
+  .apply-wrap {
+    background:var(--off-white);
+    padding:44px 5% 80px;
+    display:grid;
+    grid-template-columns:1fr 320px;
+    gap:28px;
+    align-items:start;
+  }
+
+  /* ── LOAN TYPE TABS ── */
+  .loan-tabs { display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px; }
+  .loan-tab {
+    display:flex;align-items:center;gap:10px;padding:13px 14px;border-radius:10px;
+    border:1.5px solid rgba(0,0,0,0.08);background:#fff;cursor:pointer;
+    transition:border-color .2s,background .2s;font-family:inherit;text-align:left;
+  }
+  .loan-tab:hover { border-color:var(--teal);background:var(--teal-pale); }
+  .loan-tab.active { border-color:var(--teal);background:var(--teal-pale); }
+  .tab-icon { width:36px;height:36px;border-radius:9px;background:rgba(13,184,164,0.12);display:flex;align-items:center;justify-content:center;flex-shrink:0; }
+  .tab-icon svg { width:18px;height:18px;color:var(--teal); }
+  .tab-label { font-size:13px;font-weight:600;color:var(--navy);display:block; }
+  .tab-sub   { font-size:11px;color:#8a96a8;display:block;margin-top:1px; }
+
+  /* ── FORM CARD ── */
+  .form-card {
+    background:#fff;border-radius:16px;
+    border:1px solid rgba(0,0,0,0.06);
+    overflow:hidden;
+  }
+
+  .info-banner {
+    display:flex;align-items:center;gap:10px;
+    background:#1a2a4a;
+    border:1px solid rgba(13,184,164,0.2);
+    border-radius:8px;
+    padding:12px 16px;
+    font-size:13px;color:rgba(255,255,255,0.7);
+    margin:24px 28px 0;
+    line-height:1.5;
+  }
+  .info-banner svg { color:var(--teal);flex-shrink:0;width:16px;height:16px; }
+
+  .form-body { padding:24px 28px 32px; }
+  .form-intro { font-size:14px;color:#5a6a7e;line-height:1.65;margin-bottom:28px; }
+  .form-intro a { color:var(--teal);text-decoration:none; }
+
+  /* Section headings */
+  .form-section-title {
+    font-size:14px;font-weight:600;color:var(--teal);
+    letter-spacing:0.04em;margin-bottom:18px;padding-bottom:8px;
+    border-bottom:1px solid rgba(13,184,164,0.15);
+  }
+
+  /* Grid rows */
+  .form-row { display:grid;gap:14px;margin-bottom:14px; }
+  .col-1 { grid-template-columns:1fr; }
+  .col-2 { grid-template-columns:1fr 1fr; }
+  .col-3 { grid-template-columns:100px 1fr 1fr; }
+  .col-2-1 { grid-template-columns:2fr 1fr; }
+  .col-1-2 { grid-template-columns:1fr 2fr; }
+
+  /* Fields */
+  .field { display:flex;flex-direction:column;gap:5px; }
+  .field label {
+    font-size:11px;font-weight:600;color:#8a96a8;
+    text-transform:uppercase;letter-spacing:0.07em;
+  }
+  .field label .req { color:var(--teal); }
+
+  .field input,
+  .field select,
+  .field textarea {
+    font-family:'DM Sans',sans-serif;
+    font-size:14px;font-weight:400;color:var(--navy);
+    background:#f7f8fa;
+    border:1.5px solid rgba(0,0,0,0.09);
+    border-radius:8px;
+    padding:11px 14px;
+    outline:none;
+    transition:border-color .2s,background .2s;
+    width:100%;
+    -webkit-appearance:none;appearance:none;
+  }
+  .field select {
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' stroke='%238a96a8' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;background-position:right 12px center;
+    padding-right:32px;
+  }
+  .field input:focus,
+  .field select:focus,
+  .field textarea:focus {
+    border-color:var(--teal);
+    background:#fff;
+    box-shadow:0 0 0 3px rgba(13,184,164,0.08);
+  }
+  .field input::placeholder,
+  .field textarea::placeholder { color:#b0bac8;font-weight:300; }
+  .field .hint { font-size:11px;color:#a0aab6;margin-top:2px; }
+
+  /* currency prefix */
+  .input-prefix {
+    display:flex;align-items:center;
+    background:#f7f8fa;border:1.5px solid rgba(0,0,0,0.09);border-radius:8px;overflow:hidden;
+    transition:border-color .2s;
+  }
+  .input-prefix:focus-within { border-color:var(--teal);background:#fff;box-shadow:0 0 0 3px rgba(13,184,184,0.08); }
+  .prefix-label { padding:0 10px 0 14px;font-size:13px;font-weight:600;color:#8a96a8;white-space:nowrap;border-right:1px solid rgba(0,0,0,0.07); }
+  .input-prefix input { border:none;background:transparent;box-shadow:none;padding-left:10px; }
+  .input-prefix input:focus { box-shadow:none;background:transparent; }
+
+  /* Checkbox */
+  .checkbox-row {
+    display:flex;align-items:flex-start;gap:12px;
+    padding:16px;background:#f7f8fa;border-radius:10px;
+    border:1.5px solid rgba(0,0,0,0.07);
+    margin-top:6px;cursor:pointer;
+  }
+  .checkbox-row input[type=checkbox] {
+    width:18px;height:18px;flex-shrink:0;margin-top:1px;
+    accent-color:var(--teal);cursor:pointer;
+  }
+  .checkbox-row span { font-size:13px;color:#5a6a7e;line-height:1.55; }
+  .checkbox-row a { color:var(--teal);text-decoration:none; }
+
+  /* Submit */
+  .form-footer { padding:0 28px 28px; }
+  .submit-btn {
+    width:100%;padding:15px;
+    background:var(--teal);color:var(--navy);
+    font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;
+    border:none;border-radius:10px;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;gap:10px;
+    transition:background .2s,transform .15s;
+    letter-spacing:0.02em;
+  }
+  .submit-btn:hover { background:var(--teal-light);transform:translateY(-1px); }
+  .submit-btn svg { width:18px;height:18px; }
+  .submit-btn:disabled { opacity:0.6;cursor:not-allowed;transform:none; }
+
+  .submit-note { font-size:11px;color:#a0aab6;text-align:center;margin-top:12px;line-height:1.55; }
+
+  /* ── SUCCESS STATE ── */
+  .success-state {
+    display:none;
+    padding:56px 28px;
+    text-align:center;
+  }
+  .success-icon {
+    width:72px;height:72px;border-radius:50%;
+    background:var(--teal-pale);border:2px solid var(--teal);
+    display:flex;align-items:center;justify-content:center;
+    margin:0 auto 24px;
+  }
+  .success-icon svg { width:32px;height:32px;color:var(--teal); }
+  .success-state h3 { font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:var(--navy);margin-bottom:12px; }
+  .success-state p  { font-size:15px;color:#6a7a8e;line-height:1.65;max-width:400px;margin:0 auto 28px; }
+  .success-ref { background:var(--off-white);border-radius:10px;padding:14px 20px;font-size:13px;color:#5a6a7e;margin-bottom:28px; }
+  .success-ref strong { color:var(--navy); }
+
+  /* ── LOADING OVERLAY ── */
+  .loading-overlay {
+    display:none;position:fixed;inset:0;
+    background:rgba(10,22,40,0.6);
+    z-index:999;
+    align-items:center;justify-content:center;
+    flex-direction:column;gap:16px;
+  }
+  .loading-overlay.active { display:flex; }
+  .spinner {
+    width:48px;height:48px;border-radius:50%;
+    border:3px solid rgba(255,255,255,0.1);
+    border-top-color:var(--teal);
+    animation:spin .8s linear infinite;
+  }
+  @keyframes spin { to { transform:rotate(360deg); } }
+  .loading-overlay p { color:#fff;font-size:15px;font-weight:400; }
+
+  /* ── SIDEBAR ── */
+  .sidebar { display:flex;flex-direction:column;gap:18px; }
+  .sc { background:#fff;border-radius:14px;padding:22px;border:1px solid rgba(0,0,0,0.06); }
+  .sc h3 { font-size:13px;font-weight:600;color:var(--navy);margin-bottom:14px;display:flex;align-items:center;gap:8px; }
+  .sc h3 svg { width:15px;height:15px;color:var(--teal); }
+  .sc ul { list-style:none;display:flex;flex-direction:column;gap:9px; }
+  .sc ul li { display:flex;align-items:center;gap:9px;font-size:13px;color:#5a6a7e; }
+  .sc ul li::before { content:'';width:5px;height:5px;border-radius:50%;background:var(--teal);flex-shrink:0; }
+  .rate-row { display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid rgba(0,0,0,0.05);font-size:13px; }
+  .rate-row:last-child { border-bottom:none; }
+  .rate-row span:first-child { color:#6a7a8e; }
+  .rate-row span:last-child  { font-weight:600;color:var(--navy); }
+  .pa-box { background:linear-gradient(135deg,#1a1a2e,#16213e);border:1px solid rgba(98,100,167,0.3);border-radius:14px;padding:20px;display:flex;gap:12px;align-items:flex-start; }
+  .pa-icon { width:34px;height:34px;border-radius:8px;background:linear-gradient(135deg,#742774,#3d1a78);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0; }
+  .pa-box h4 { font-size:13px;font-weight:600;color:rgba(255,255,255,0.85);margin-bottom:4px; }
+  .pa-box p  { font-size:12px;color:rgba(255,255,255,0.4);line-height:1.55; }
+  .sc-cta { background:var(--navy);border-radius:14px;padding:22px;text-align:center; }
+  .sc-cta p { font-size:13px;color:rgba(255,255,255,0.5);line-height:1.6;margin-bottom:14px; }
+  .sc-cta a.btn { display:flex;align-items:center;justify-content:center;gap:8px;background:var(--teal);color:var(--navy);font-size:13px;font-weight:600;padding:11px 20px;border-radius:8px;text-decoration:none;transition:background .2s; }
+  .sc-cta a.btn:hover { background:var(--teal-light); }
+  .sc-cta small { font-size:12px;color:rgba(255,255,255,0.25);margin-top:10px;display:block; }
+  .sc-cta small a { color:var(--teal);text-decoration:none; }
+
+  /* ── INTEGRATION DOCS ── */
+  .integration-card {
+    background:#fff;border-radius:16px;border:1px solid rgba(0,0,0,0.06);
+    margin-top:20px;overflow:hidden;
+  }
+  .integration-header { padding:20px 24px;border-bottom:1px solid rgba(0,0,0,0.05); }
+  .integration-header h3 { font-size:15px;font-weight:600;color:var(--navy);margin-bottom:4px; }
+  .integration-header p  { font-size:13px;color:#6a7a8e; }
+  .integration-body { padding:20px 24px; }
+  .integration-step { display:flex;gap:14px;margin-bottom:18px;align-items:flex-start; }
+  .int-num { width:26px;height:26px;border-radius:50%;background:var(--teal-pale);border:1px solid rgba(13,184,164,0.3);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--teal);flex-shrink:0;margin-top:1px; }
+  .int-text strong { font-size:13px;font-weight:600;color:var(--navy);display:block;margin-bottom:3px; }
+  .int-text span  { font-size:12px;color:#8a96a8;line-height:1.55; }
+  .code-block { background:#1e2a3e;border-radius:8px;padding:14px 16px;font-family:monospace;font-size:12px;color:#7dd6c8;margin-top:10px;line-height:1.7;overflow-x:auto; }
+  .code-block .comment { color:#4a6080; }
+
+  @media(max-width:960px){
+    .apply-wrap { grid-template-columns:1fr; }
+    .loan-tabs { grid-template-columns:repeat(2,1fr); }
+  }
+  @media(max-width:600px){
+    .loan-tabs { grid-template-columns:1fr 1fr; }
+    .col-2,.col-3,.col-2-1,.col-1-2 { grid-template-columns:1fr; }
+    .form-body { padding:20px 16px 24px; }
+    .form-footer { padding:0 16px 20px; }
+    .info-banner { margin:16px 16px 0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">
+    <div class="logo-icon">
+      <svg viewBox="0 0 40 40" fill="none">
+        <circle cx="20" cy="20" r="19" stroke="#0db8a4" stroke-width="1.5" fill="rgba(13,184,164,0.08)"/>
+        <path d="M8 22c4-5 8-7 12-6 3 .8 6 3 9 1l-3 5c-3 1-6-1-9-1-4 0-7 2-9 1z" fill="#0db8a4" opacity="0.9"/>
+        <path d="M26 17c1.5-1.5 4-2 5.5-1.5l-1.5 4L28 20l-2-3z" fill="#0db8a4" opacity="0.6"/>
+        <circle cx="12" cy="21" r="1.2" fill="white" opacity="0.9"/>
+      </svg>
+    </div>
+    <div class="logo-text">
+      <span class="logo-name">Flying Fish Capital</span>
+      <span class="logo-tagline">flyingfishcapital.com.pg</span>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html#products">Loan Products</a></li>
+    <li><a href="index.html#how">How It Works</a></li>
+    <li><a href="index.html#branches">Branches</a></li>
+    <li><a href="index.html#eligibility">Eligibility</a></li>
+    <li><a href="apply.html" class="nav-cta">Apply Now</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="apply-hero">
+  <div class="apply-hero-circle"></div>
+  <div class="apply-hero-circle"></div>
+  <div class="apply-hero-inner">
+    <div class="breadcrumb"><a href="index.html">Home</a><span>›</span><span style="color:rgba(255,255,255,0.6)">Loan Application</span></div>
+    <h1>Personal Loan Application <span style="color:var(--teal)">Papua New Guinea</span></h1>
+    <p>You are applying through Flying Fish Capital PNG. Loans are issued in PGK.</p>
+    <div class="progress-bar">
+      <div class="pb-step active"><div class="pb-num">1</div>Apply</div>
+      <div class="pb-line"></div>
+      <div class="pb-step"><div class="pb-num">2</div>Documents</div>
+      <div class="pb-line"></div>
+      <div class="pb-step"><div class="pb-num">3</div>Assessment</div>
+      <div class="pb-line"></div>
+      <div class="pb-step"><div class="pb-num">4</div>Approval</div>
+    </div>
+  </div>
+</div>
+
+<!-- BODY -->
+<div class="apply-wrap">
+
+  <!-- MAIN COLUMN -->
+  <div>
+
+    <!-- Loan Type Tabs -->
+    <div class="loan-tabs">
+      <button class="loan-tab active" onclick="switchLoan(this,'personal','Personal Loan Application')">
+        <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M20 7H4a2 2 0 00-2 2v6a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z"/><circle cx="12" cy="12" r="2"/></svg></div>
+        <div><span class="tab-label">Personal</span><span class="tab-sub">Up to K50,000</span></div>
+      </button>
+      <button class="loan-tab" onclick="switchLoan(this,'home','Home Loan Application')">
+        <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+        <div><span class="tab-label">Home</span><span class="tab-sub">Up to K500,000</span></div>
+      </button>
+      <button class="loan-tab" onclick="switchLoan(this,'business','Business Loan Application')">
+        <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg></div>
+        <div><span class="tab-label">Business</span><span class="tab-sub">Up to K1M</span></div>
+      </button>
+      <button class="loan-tab" onclick="switchLoan(this,'vehicle','Vehicle Finance Application')">
+        <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h6l1 1v11H6v-6"/></svg></div>
+        <div><span class="tab-label">Vehicle</span><span class="tab-sub">Up to K120,000</span></div>
+      </button>
+    </div>
+
+    <!-- FORM CARD -->
+    <div class="form-card">
+
+      <!-- Info banner -->
+      <div class="info-banner">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="8" cy="8" r="7"/><path d="M8 7v4M8 5.5v.5"/></svg>
+        You are applying through Flying Fish Capital Papua New Guinea. Loans are issued in PGK.
+      </div>
+
+      <!-- FORM -->
+      <form id="loanForm" novalidate>
+        <input type="hidden" id="loanType" value="Personal Loan">
+
+        <div class="form-body">
+          <p class="form-intro">
+            Fill out the form below to submit a loan application. If you already have an account with us, 
+            <a href="#">login to the Customer Portal</a> to continue or start a new loan application.
+          </p>
+
+          <!-- SECTION 1: About You -->
+          <div class="form-section-title">Tell us about yourself</div>
+
+          <div class="form-row col-1" style="margin-bottom:14px">
+            <div class="field">
+              <label>Are you a new customer? <span class="req">*</span></label>
+              <select id="customerType" required>
+                <option value="">Select…</option>
+                <option>Yes, I am a new customer</option>
+                <option>No, I am an existing customer</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row col-3">
+            <div class="field">
+              <label>Title <span class="req">*</span></label>
+              <select id="title" required>
+                <option value="">--</option>
+                <option>Mr</option><option>Mrs</option><option>Ms</option><option>Dr</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>First Name <span class="req">*</span></label>
+              <input type="text" id="firstName" placeholder="First name" required>
+            </div>
+            <div class="field">
+              <label>Last Name <span class="req">*</span></label>
+              <input type="text" id="lastName" placeholder="Last name" required>
+            </div>
+          </div>
+
+          <div class="form-row col-2">
+            <div class="field">
+              <label>Middle Name</label>
+              <input type="text" id="middleName" placeholder="Middle name (optional)">
+            </div>
+            <div class="field">
+              <label>Date of Birth <span class="req">*</span></label>
+              <input type="date" id="dob" required>
+            </div>
+          </div>
+
+          <div class="form-row col-2">
+            <div class="field">
+              <label>Email <span class="req">*</span></label>
+              <input type="email" id="email" placeholder="your@email.com" required>
+            </div>
+            <div class="field">
+              <label>Mobile Number <span class="req">*</span></label>
+              <input type="tel" id="mobile" placeholder="+675 7XXX XXXX" required>
+            </div>
+          </div>
+
+          <div class="form-row col-1">
+            <div class="field">
+              <label>Alternate Phone Number</label>
+              <input type="tel" id="altPhone" placeholder="Alternate contact number">
+            </div>
+          </div>
+
+          <!-- SECTION 2: Loan Requirements -->
+          <div class="form-section-title" style="margin-top:28px">Your loan requirements</div>
+
+          <div class="form-row col-2">
+            <div class="field">
+              <label>Loan Amount Requested (PGK) <span class="req">*</span></label>
+              <div class="input-prefix">
+                <span class="prefix-label">PGK</span>
+                <input type="number" id="loanAmount" placeholder="Enter the amount you want to borrow" required min="1000" max="50000">
+              </div>
+              <span class="hint" id="amountHint">Min amount PGK1,000 / Max amount PGK50,000</span>
+            </div>
+            <div class="field">
+              <label>Preferred Term Length (Fortnights) <span class="req">*</span></label>
+              <input type="number" id="termLength" placeholder="6" value="6" required min="6" max="78">
+              <span class="hint">Number of terms in fortnights. Min 6 and max 78 fortnights</span>
+            </div>
+          </div>
+
+          <div class="form-row col-1">
+            <div class="field">
+              <label>Purpose of Loan <span class="req">*</span></label>
+              <select id="loanPurpose" required>
+                <option value="">Select purpose…</option>
+                <option>School / University Fees</option>
+                <option>Medical Expenses</option>
+                <option>Home Improvements / Renovation</option>
+                <option>Debt Consolidation</option>
+                <option>Vehicle Purchase</option>
+                <option>Business Investment</option>
+                <option>Travel</option>
+                <option>Wedding / Family Event</option>
+                <option>Other</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- SECTION 3: Employment -->
+          <div class="form-section-title" style="margin-top:28px">Your employment details</div>
+
+          <div class="form-row col-2">
+            <div class="field">
+              <label>Employment Type <span class="req">*</span></label>
+              <select id="empType" required>
+                <option value="">Select…</option>
+                <option>Public Servant / Government</option>
+                <option>Private Sector Employee</option>
+                <option>Self-Employed</option>
+                <option>Casual / Contract</option>
+                <option>Retired</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Employer <span class="req">*</span></label>
+              <input type="text" id="employer" placeholder="Name of your employer" required>
+            </div>
+          </div>
+
+          <div class="form-row col-2">
+            <div class="field">
+              <label>Employment Status <span class="req">*</span></label>
+              <select id="empStatus" required>
+                <option value="">Select…</option>
+                <option>Full-Time</option>
+                <option>Part-Time</option>
+                <option>Casual</option>
+                <option>Contract</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Position / Job Title <span class="req">*</span></label>
+              <input type="text" id="position" placeholder="Your job title or position" required>
+            </div>
+          </div>
+
+          <div class="form-row col-1">
+            <div class="field">
+              <label>Employment Start Date <span class="req">*</span></label>
+              <input type="date" id="empStartDate" required>
+            </div>
+          </div>
+
+          <!-- SECTION 4: Income -->
+          <div class="form-section-title" style="margin-top:28px">Gross fortnightly/monthly pay</div>
+
+          <div class="form-row col-2">
+            <div class="field">
+              <label>Gross Pay / Salary Amount <span class="req">*</span></label>
+              <div class="input-prefix">
+                <span class="prefix-label">PGK</span>
+                <input type="number" id="grossPay" placeholder="Enter your gross pay/salary amount" required>
+              </div>
+            </div>
+            <div class="field">
+              <label>Pay Cycle <span class="req">*</span></label>
+              <select id="payCycle" required>
+                <option value="">Select…</option>
+                <option>Fortnightly</option>
+                <option>Monthly</option>
+                <option>Weekly</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- SECTION 5: Branch -->
+          <div class="form-section-title" style="margin-top:28px">Branch preference</div>
+          <div class="form-row col-1">
+            <div class="field">
+              <label>Preferred Branch <span class="req">*</span></label>
+              <select id="branch" required>
+                <option value="">Select a branch…</option>
+                <option>Port Moresby (Head Office)</option>
+                <option>Lae</option>
+                <option>Mount Hagen</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- SECTION 6: T&C -->
+          <div class="form-section-title" style="margin-top:28px">Terms and Conditions</div>
+          <label class="checkbox-row">
+            <input type="checkbox" id="tcCheck" required>
+            <span>
+              Check this box to provide Flying Fish Capital the authority to obtain and provide personal, 
+              financial and credit information as outlined in our <a href="#" onclick="return false">Terms &amp; Conditions</a> 
+              and <a href="#" onclick="return false">Privacy Policy</a>. <span class="req">*</span>
+            </span>
+          </label>
+        </div><!-- /form-body -->
+
+        <!-- Error message -->
+        <div id="formError" style="display:none;margin:0 28px 16px;padding:12px 16px;background:#fff0f0;border:1px solid #ffbaba;border-radius:8px;font-size:13px;color:#c0392b;"></div>
+
+        <div class="form-footer">
+          <button type="submit" class="submit-btn" id="submitBtn">
+            <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 9h14M9 3l6 6-6 6"/></svg>
+            Submit Loan Application
+          </button>
+          <p class="submit-note">By submitting, your application is securely sent to our team. We will contact you within 24–48 business hours.</p>
+        </div>
+
+        <!-- Success state -->
+        <div class="success-state" id="successState">
+          <div class="success-icon">
+            <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 16l7 7L27 9"/></svg>
+          </div>
+          <h3>Application Submitted!</h3>
+          <p>Thank you. Your loan application has been received and is being reviewed by our team. We will contact you within 24–48 business hours.</p>
+          <div class="success-ref">Reference: <strong id="refNumber">FFC-000000</strong></div>
+          <a href="index.html" class="btn-primary" style="display:inline-flex;align-items:center;gap:8px;">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3H3v10h10V8M8 8L13 3M10 3h3v3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Return to Homepage
+          </a>
+        </div>
+
+      </form>
+    </div><!-- /form-card -->
+
+    <!-- INTEGRATION DOCS -->
+    <div class="integration-card">
+      <div class="integration-header">
+        <h3>⚡ Power Automate + SharePoint / Dataverse Integration</h3>
+        <p>How to connect this form to your Microsoft 365 environment for PowerApps</p>
+      </div>
+      <div class="integration-body">
+        <div class="integration-step">
+          <div class="int-num">1</div>
+          <div class="int-text">
+            <strong>Set up your Power Automate HTTP trigger</strong>
+            <span>In Power Automate, create a new flow → "When an HTTP request is received". Copy the generated POST URL and paste it as <code>POWER_AUTOMATE_URL</code> in the script below.</span>
+          </div>
+        </div>
+        <div class="integration-step">
+          <div class="int-num">2</div>
+          <div class="int-text">
+            <strong>Add actions in Power Automate</strong>
+            <span>After the trigger: add "Create item" (SharePoint) or "Create a new row" (Dataverse). Map the JSON fields from the request body to your list/table columns.</span>
+          </div>
+        </div>
+        <div class="integration-step">
+          <div class="int-num">3</div>
+          <div class="int-text">
+            <strong>Paste your Power Automate URL into the script</strong>
+            <span>In <code>apply.html</code>, find the <code>POWER_AUTOMATE_URL</code> constant below and replace the placeholder with your actual flow URL.</span>
+            <div class="code-block">
+<span class="comment">// In the &lt;script&gt; section of apply.html:</span>
+const POWER_AUTOMATE_URL = 
+  "https://prod-XX.westus.logic.azure.com/workflows/YOUR_FLOW_URL";
+
+<span class="comment">// The form submits this JSON automatically:</span>
+{
+  "loanType": "Personal Loan",
+  "firstName": "Maria",
+  "lastName": "Kari",
+  "email": "maria@email.com",
+  "mobile": "+675 7123 4567",
+  "loanAmount": "15000",
+  "termLength": "24",
+  "loanPurpose": "School / University Fees",
+  "employer": "PNG Government",
+  "grossPay": "2500",
+  "payCycle": "Fortnightly",
+  "branch": "Port Moresby (Head Office)",
+  "submittedAt": "2025-05-26T08:00:00Z",
+  "referenceNumber": "FFC-482910"
+}
+            </div>
+          </div>
+        </div>
+        <div class="integration-step">
+          <div class="int-num">4</div>
+          <div class="int-text">
+            <strong>Build your PowerApps dashboard</strong>
+            <span>Connect PowerApps to your SharePoint list or Dataverse table. Every submission from the website will appear instantly — ready to filter, approve, or action from your app.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /main col -->
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <div class="pa-box">
+      <div class="pa-icon">⚡</div>
+      <div>
+        <h4>PowerApps Ready</h4>
+        <p>Submissions POST directly to Power Automate → SharePoint / Dataverse → your PowerApps dashboard.</p>
+      </div>
+    </div>
+
+    <div class="sc">
+      <h3><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><rect x="2" y="1" width="12" height="14" rx="1.5"/><path d="M5 5h6M5 8h6M5 11h4"/></svg>Documents to Prepare</h3>
+      <ul>
+        <li>Valid ID — Passport / NID / Driver's Licence</li>
+        <li>3 months recent pay slips</li>
+        <li>3 months bank statement</li>
+        <li>Proof of residential address</li>
+        <li>Collateral documents (if applicable)</li>
+      </ul>
+    </div>
+
+    <div class="sc">
+      <h3><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 12L6 8l3 3 5-6"/></svg>Rates at a Glance</h3>
+      <div class="rate-row"><span>Personal Loan</span><span>From 5% /mo</span></div>
+      <div class="rate-row"><span>Home Loan</span><span>From 3.5% /mo</span></div>
+      <div class="rate-row"><span>Business Loan</span><span>From 4% /mo</span></div>
+      <div class="rate-row"><span>Vehicle Finance</span><span>From 4.5% /mo</span></div>
+    </div>
+
+    <div class="sc">
+      <h3><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M8 1C5.24 1 3 3.24 3 6c0 4 5 9 5 9s5-5 5-9c0-2.76-2.24-5-5-5z"/><circle cx="8" cy="6" r="2"/></svg>Branch Contacts</h3>
+      <div style="display:flex;flex-direction:column;gap:12px;margin-top:4px">
+        <div>
+          <div style="font-size:13px;font-weight:600;color:var(--navy)">Port Moresby (HQ)</div>
+          <a href="tel:+67532145678" style="font-size:12px;color:var(--teal);text-decoration:none">(675) 321-4567</a>
+        </div>
+        <div>
+          <div style="font-size:13px;font-weight:600;color:var(--navy)">Lae</div>
+          <a href="tel:+67547289010" style="font-size:12px;color:var(--teal);text-decoration:none">(675) 472-8910</a>
+        </div>
+        <div>
+          <div style="font-size:13px;font-weight:600;color:var(--navy)">Mount Hagen</div>
+          <a href="tel:+67554233770" style="font-size:12px;color:var(--teal);text-decoration:none">(675) 542-3377</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="sc-cta">
+      <p>Need help with your application?</p>
+      <a href="mailto:loans@flyingfishcapital.com.pg" class="btn">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 3l6 5 6-5M1 3h12v8H1V3z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Email Our Loans Team
+      </a>
+      <small>Or call: <a href="tel:+67532145678">(675) 321-4567</a></small>
+    </div>
+
+  </aside>
+
+</div><!-- /apply-wrap -->
+
+<!-- LOADING OVERLAY -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="spinner"></div>
+  <p>Submitting your application…</p>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div style="display:flex;align-items:center;gap:12px">
+        <svg width="36" height="36" viewBox="0 0 40 40" fill="none">
+          <circle cx="20" cy="20" r="19" stroke="#0db8a4" stroke-width="1.5" fill="rgba(13,184,164,0.08)"/>
+          <path d="M8 22c4-5 8-7 12-6 3 .8 6 3 9 1l-3 5c-3 1-6-1-9-1-4 0-7 2-9 1z" fill="#0db8a4" opacity="0.9"/>
+          <path d="M26 17c1.5-1.5 4-2 5.5-1.5l-1.5 4L28 20l-2-3z" fill="#0db8a4" opacity="0.6"/>
+          <circle cx="12" cy="21" r="1.2" fill="white" opacity="0.9"/>
+        </svg>
+        <span style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:white">Flying Fish Capital</span>
+      </div>
+      <p style="font-size:14px;font-weight:300;line-height:1.7;margin-top:20px;max-width:280px;color:rgba(255,255,255,0.5)">Empowering Papua New Guineans with accessible, transparent lending solutions.</p>
+      <span class="footer-domain">flyingfishcapital.com.pg</span>
+    </div>
+    <div class="footer-col"><h4>Products</h4><ul><li><a href="index.html#products">Personal Loans</a></li><li><a href="index.html#products">Home Loans</a></li><li><a href="index.html#products">Business Loans</a></li><li><a href="index.html#products">Vehicle Finance</a></li></ul></div>
+    <div class="footer-col"><h4>Company</h4><ul><li><a href="#">About Us</a></li><li><a href="index.html#branches">Our Branches</a></li><li><a href="#">Careers</a></li></ul></div>
+    <div class="footer-col"><h4>Help</h4><ul><li><a href="index.html#eligibility">Eligibility</a></li><li><a href="#">Privacy Policy</a></li><li><a href="#">Contact Us</a></li></ul></div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 Flying Fish Capital Limited. All rights reserved.</p>
+    <p class="footer-reg">Registered under the Bank of Papua New Guinea — Licence No. FLC-2012-04</p>
+  </div>
+</footer>
+
+<script>
+// ════════════════════════════════════════════════════════════
+// POWER AUTOMATE INTEGRATION
+// Replace this URL with your actual Power Automate HTTP trigger URL
+// Steps: Power Automate → New Flow → "When an HTTP request is received"
+//        → Copy the POST URL → paste it below
+// ════════════════════════════════════════════════════════════
+const POWER_AUTOMATE_URL = "YOUR_POWER_AUTOMATE_HTTP_TRIGGER_URL_HERE";
+
+// Loan type switcher
+const loanConfig = {
+  personal: { title:"Personal Loan Application", max:50000,  hint:"Min amount PGK1,000 / Max amount PGK50,000" },
+  home:     { title:"Home Loan Application",     max:500000, hint:"Min amount PGK5,000 / Max amount PGK500,000" },
+  business: { title:"Business Loan Application", max:1000000,hint:"Min amount PGK5,000 / Max amount PGK1,000,000" },
+  vehicle:  { title:"Vehicle Finance Application",max:120000, hint:"Min amount PGK2,000 / Max amount PGK120,000" }
+};
+
+function switchLoan(btn, type, title) {
+  document.querySelectorAll('.loan-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('loanType').value = title;
+  document.querySelector('.apply-hero h1').innerHTML =
+    title + ' <span style="color:var(--teal)">Papua New Guinea</span>';
+  const cfg = loanConfig[type];
+  document.getElementById('loanAmount').max = cfg.max;
+  document.getElementById('amountHint').textContent = cfg.hint;
+}
+
+// Reference number generator
+function genRef() {
+  return 'FFC-' + Math.floor(100000 + Math.random() * 900000);
+}
+
+// Form submit
+document.getElementById('loanForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+
+  // Clear errors
+  const errEl = document.getElementById('formError');
+  errEl.style.display = 'none';
+
+  // Basic validation
+  const required = ['customerType','title','firstName','lastName','dob','email',
+                    'mobile','loanAmount','termLength','loanPurpose',
+                    'empType','employer','empStatus','position','empStartDate',
+                    'grossPay','payCycle','branch'];
+  let missing = false;
+  required.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el.value.trim()) { el.style.borderColor = '#e74c3c'; missing = true; }
+    else el.style.borderColor = '';
+  });
+
+  if (!document.getElementById('tcCheck').checked) {
+    document.querySelector('.checkbox-row').style.borderColor = '#e74c3c';
+    missing = true;
+  } else {
+    document.querySelector('.checkbox-row').style.borderColor = '';
+  }
+
+  if (missing) {
+    errEl.textContent = 'Please fill in all required fields before submitting.';
+    errEl.style.display = 'block';
+    errEl.scrollIntoView({ behavior:'smooth', block:'center' });
+    return;
+  }
+
+  const refNumber = genRef();
+
+  // Build payload — this is what flows into SharePoint / Dataverse
+  const payload = {
+    referenceNumber:  refNumber,
+    loanType:         document.getElementById('loanType').value,
+    customerType:     document.getElementById('customerType').value,
+    title:            document.getElementById('title').value,
+    firstName:        document.getElementById('firstName').value,
+    lastName:         document.getElementById('lastName').value,
+    middleName:       document.getElementById('middleName').value,
+    dateOfBirth:      document.getElementById('dob').value,
+    email:            document.getElementById('email').value,
+    mobile:           document.getElementById('mobile').value,
+    altPhone:         document.getElementById('altPhone').value,
+    loanAmount:       document.getElementById('loanAmount').value,
+    termFortnights:   document.getElementById('termLength').value,
+    loanPurpose:      document.getElementById('loanPurpose').value,
+    employmentType:   document.getElementById('empType').value,
+    employer:         document.getElementById('employer').value,
+    employmentStatus: document.getElementById('empStatus').value,
+    position:         document.getElementById('position').value,
+    empStartDate:     document.getElementById('empStartDate').value,
+    grossPay:         document.getElementById('grossPay').value,
+    payCycle:         document.getElementById('payCycle').value,
+    branch:           document.getElementById('branch').value,
+    status:           "New Application",
+    submittedAt:      new Date().toISOString()
+  };
+
+  // Show loading
+  document.getElementById('loadingOverlay').classList.add('active');
+  document.getElementById('submitBtn').disabled = true;
+
+  try {
+    // POST to Power Automate (if URL is configured)
+    if (POWER_AUTOMATE_URL !== "YOUR_POWER_AUTOMATE_HTTP_TRIGGER_URL_HERE") {
+      await fetch(POWER_AUTOMATE_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+    } else {
+      // Demo mode — simulate network delay
+      await new Promise(r => setTimeout(r, 1800));
+      console.log('Demo mode — payload that would be sent:', payload);
+    }
+
+    // Show success
+    document.getElementById('loadingOverlay').classList.remove('active');
+    document.getElementById('refNumber').textContent = refNumber;
+    document.getElementById('loanForm').querySelector('.info-banner').style.display = 'none';
+    document.getElementById('loanForm').querySelector('.form-body').style.display = 'none';
+    document.getElementById('loanForm').querySelector('.form-footer').style.display = 'none';
+    document.getElementById('formError').style.display = 'none';
+    document.getElementById('successState').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  } catch (err) {
+    document.getElementById('loadingOverlay').classList.remove('active');
+    document.getElementById('submitBtn').disabled = false;
+    errEl.textContent = 'There was a problem submitting your application. Please try again or call us directly.';
+    errEl.style.display = 'block';
+    console.error(err);
+  }
+});
+</script>
+</body>
+</html>
