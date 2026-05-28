@@ -29,7 +29,7 @@ body {
 nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
   display: flex; align-items: center; justify-content: space-between;
-  padding: 0 5%;
+  padding: 0 5% 0 0;
   height: 72px;
   background: rgba(10, 22, 40, 0.95);
   backdrop-filter: blur(12px);
@@ -39,6 +39,8 @@ nav {
 .nav-logo {
   display: flex; align-items: center; gap: 12px;
   text-decoration: none;
+  padding-left: 0;
+  margin-left: 0;
 }
 
 .logo-icon {

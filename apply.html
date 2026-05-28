@@ -46,19 +46,7 @@
     align-items:start;
   }
 
-  /* ── LOAN TYPE TABS ── */
-  .loan-tabs { display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px; }
-  .loan-tab {
-    display:flex;align-items:center;gap:10px;padding:13px 14px;border-radius:10px;
-    border:1.5px solid rgba(0,0,0,0.08);background:#fff;cursor:pointer;
-    transition:border-color .2s,background .2s;font-family:inherit;text-align:left;
-  }
-  .loan-tab:hover { border-color:var(--teal);background:var(--teal-pale); }
-  .loan-tab.active { border-color:var(--teal);background:var(--teal-pale); }
-  .tab-icon { width:36px;height:36px;border-radius:9px;background:rgba(13,184,164,0.12);display:flex;align-items:center;justify-content:center;flex-shrink:0; }
-  .tab-icon svg { width:18px;height:18px;color:var(--teal); }
-  .tab-label { font-size:13px;font-weight:600;color:var(--navy);display:block; }
-  .tab-sub   { font-size:11px;color:#8a96a8;display:block;margin-top:1px; }
+
 
   /* ── FORM CARD ── */
   .form-card {
@@ -255,10 +243,8 @@
 
   @media(max-width:960px){
     .apply-wrap { grid-template-columns:1fr; }
-    .loan-tabs { grid-template-columns:repeat(2,1fr); }
   }
   @media(max-width:600px){
-    .loan-tabs { grid-template-columns:1fr 1fr; }
     .col-2,.col-3,.col-2-1,.col-1-2 { grid-template-columns:1fr; }
     .form-body { padding:20px 16px 24px; }
     .form-footer { padding:0 16px 20px; }
@@ -271,14 +257,7 @@
 <!-- NAV -->
 <nav>
   <a href="index.html" class="nav-logo">
-    <div class="logo-icon">
-      <svg viewBox="0 0 40 40" fill="none">
-        <circle cx="20" cy="20" r="19" stroke="#0db8a4" stroke-width="1.5" fill="rgba(13,184,164,0.08)"/>
-        <path d="M8 22c4-5 8-7 12-6 3 .8 6 3 9 1l-3 5c-3 1-6-1-9-1-4 0-7 2-9 1z" fill="#0db8a4" opacity="0.9"/>
-        <path d="M26 17c1.5-1.5 4-2 5.5-1.5l-1.5 4L28 20l-2-3z" fill="#0db8a4" opacity="0.6"/>
-        <circle cx="12" cy="21" r="1.2" fill="white" opacity="0.9"/>
-      </svg>
-    </div>
+    <img src="images/ffclogo.png" style="height:50px; width:auto;">
     <div class="logo-text">
       <span class="logo-name">Flying Fish Capital</span>
       <span class="logo-tagline">flyingfishcapital.com.pg</span>
@@ -300,6 +279,7 @@
   <div class="apply-hero-inner">
     <div class="breadcrumb"><a href="index.html">Home</a><span>›</span><span style="color:rgba(255,255,255,0.6)">Loan Application</span></div>
     <h1>Personal Loan Application <span style="color:var(--teal)">Papua New Guinea</span></h1>
+
     <p>You are applying through Flying Fish Capital PNG. Loans are issued in PGK.</p>
     <div class="progress-bar">
       <div class="pb-step active"><div class="pb-num">1</div>Apply</div>
@@ -318,26 +298,6 @@
 
   <!-- MAIN COLUMN -->
   <div>
-
-    <!-- Loan Type Tabs -->
-    <div class="loan-tabs">
-      <button class="loan-tab active" onclick="switchLoan(this,'personal','Personal Loan Application')">
-        <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M20 7H4a2 2 0 00-2 2v6a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z"/><circle cx="12" cy="12" r="2"/></svg></div>
-        <div><span class="tab-label">Personal</span><span class="tab-sub">Up to K50,000</span></div>
-      </button>
-      <button class="loan-tab" onclick="switchLoan(this,'home','Home Loan Application')">
-        <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
-        <div><span class="tab-label">Home</span><span class="tab-sub">Up to K500,000</span></div>
-      </button>
-      <button class="loan-tab" onclick="switchLoan(this,'business','Business Loan Application')">
-        <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg></div>
-        <div><span class="tab-label">Business</span><span class="tab-sub">Up to K1M</span></div>
-      </button>
-      <button class="loan-tab" onclick="switchLoan(this,'vehicle','Vehicle Finance Application')">
-        <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h6l1 1v11H6v-6"/></svg></div>
-        <div><span class="tab-label">Vehicle</span><span class="tab-sub">Up to K120,000</span></div>
-      </button>
-    </div>
 
     <!-- FORM CARD -->
     <div class="form-card">
@@ -663,13 +623,6 @@ const POWER_AUTOMATE_URL =
       </ul>
     </div>
 
-    <div class="sc">
-      <h3><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 12L6 8l3 3 5-6"/></svg>Rates at a Glance</h3>
-      <div class="rate-row"><span>Personal Loan</span><span>From 5% /mo</span></div>
-      <div class="rate-row"><span>Home Loan</span><span>From 3.5% /mo</span></div>
-      <div class="rate-row"><span>Business Loan</span><span>From 4% /mo</span></div>
-      <div class="rate-row"><span>Vehicle Finance</span><span>From 4.5% /mo</span></div>
-    </div>
 
     <div class="sc">
       <h3><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M8 1C5.24 1 3 3.24 3 6c0 4 5 9 5 9s5-5 5-9c0-2.76-2.24-5-5-5z"/><circle cx="8" cy="6" r="2"/></svg>Branch Contacts</h3>
@@ -713,12 +666,7 @@ const POWER_AUTOMATE_URL =
   <div class="footer-top">
     <div class="footer-brand">
       <div style="display:flex;align-items:center;gap:12px">
-        <svg width="36" height="36" viewBox="0 0 40 40" fill="none">
-          <circle cx="20" cy="20" r="19" stroke="#0db8a4" stroke-width="1.5" fill="rgba(13,184,164,0.08)"/>
-          <path d="M8 22c4-5 8-7 12-6 3 .8 6 3 9 1l-3 5c-3 1-6-1-9-1-4 0-7 2-9 1z" fill="#0db8a4" opacity="0.9"/>
-          <path d="M26 17c1.5-1.5 4-2 5.5-1.5l-1.5 4L28 20l-2-3z" fill="#0db8a4" opacity="0.6"/>
-          <circle cx="12" cy="21" r="1.2" fill="white" opacity="0.9"/>
-        </svg>
+        <img src="images/ffclogo.png" style="height:40px;width:auto;">
         <span style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:white">Flying Fish Capital</span>
       </div>
       <p style="font-size:14px;font-weight:300;line-height:1.7;margin-top:20px;max-width:280px;color:rgba(255,255,255,0.5)">Empowering Papua New Guineans with accessible, transparent lending solutions.</p>
@@ -742,25 +690,6 @@ const POWER_AUTOMATE_URL =
 //        → Copy the POST URL → paste it below
 // ════════════════════════════════════════════════════════════
 const POWER_AUTOMATE_URL = "YOUR_POWER_AUTOMATE_HTTP_TRIGGER_URL_HERE";
-
-// Loan type switcher
-const loanConfig = {
-  personal: { title:"Personal Loan Application", max:50000,  hint:"Min amount PGK1,000 / Max amount PGK50,000" },
-  home:     { title:"Home Loan Application",     max:500000, hint:"Min amount PGK5,000 / Max amount PGK500,000" },
-  business: { title:"Business Loan Application", max:1000000,hint:"Min amount PGK5,000 / Max amount PGK1,000,000" },
-  vehicle:  { title:"Vehicle Finance Application",max:120000, hint:"Min amount PGK2,000 / Max amount PGK120,000" }
-};
-
-function switchLoan(btn, type, title) {
-  document.querySelectorAll('.loan-tab').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById('loanType').value = title;
-  document.querySelector('.apply-hero h1').innerHTML =
-    title + ' <span style="color:var(--teal)">Papua New Guinea</span>';
-  const cfg = loanConfig[type];
-  document.getElementById('loanAmount').max = cfg.max;
-  document.getElementById('amountHint').textContent = cfg.hint;
-}
 
 // Reference number generator
 function genRef() {
