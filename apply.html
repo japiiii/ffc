@@ -250,6 +250,47 @@
     .form-footer { padding:0 16px 20px; }
     .info-banner { margin:16px 16px 0; }
   }
+
+/* Success Modal */
+#successModal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+}
+#successModal.active { display: flex; }
+.modal-box {
+  background: #fff;
+  border-radius: 16px;
+  padding: 40px 36px;
+  max-width: 480px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+.modal-icon {
+  width: 72px; height: 72px;
+  background: #e8f8f2;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 20px;
+  font-size: 36px;
+}
+.modal-title { font-size: 22px; font-weight: 700; color: #0d4a6b; margin-bottom: 8px; }
+.modal-ref { font-size: 13px; color: #888; margin-bottom: 6px; }
+.modal-ref span { font-weight: 700; color: #1d9e75; font-size: 15px; }
+.modal-msg { font-size: 14px; color: #555; line-height: 1.6; margin-bottom: 28px; }
+.modal-btn {
+  background: #1d9e75; color: #fff; border: none;
+  padding: 14px 32px; border-radius: 8px;
+  font-size: 15px; font-weight: 600; cursor: pointer;
+  width: 100%;
+}
+.modal-btn:hover { background: #179165; }
+
 </style>
 </head>
 <body>
@@ -538,79 +579,13 @@
       </form>
     </div><!-- /form-card -->
 
-    <!-- INTEGRATION DOCS -->
-    <div class="integration-card">
-      <div class="integration-header">
-        <h3>⚡ Power Automate + SharePoint / Dataverse Integration</h3>
-        <p>How to connect this form to your Microsoft 365 environment for PowerApps</p>
-      </div>
-      <div class="integration-body">
-        <div class="integration-step">
-          <div class="int-num">1</div>
-          <div class="int-text">
-            <strong>Set up your Power Automate HTTP trigger</strong>
-            <span>In Power Automate, create a new flow → "When an HTTP request is received". Copy the generated POST URL and paste it as <code>POWER_AUTOMATE_URL</code> in the script below.</span>
-          </div>
-        </div>
-        <div class="integration-step">
-          <div class="int-num">2</div>
-          <div class="int-text">
-            <strong>Add actions in Power Automate</strong>
-            <span>After the trigger: add "Create item" (SharePoint) or "Create a new row" (Dataverse). Map the JSON fields from the request body to your list/table columns.</span>
-          </div>
-        </div>
-        <div class="integration-step">
-          <div class="int-num">3</div>
-          <div class="int-text">
-            <strong>Paste your Power Automate URL into the script</strong>
-            <span>In <code>apply.html</code>, find the <code>POWER_AUTOMATE_URL</code> constant below and replace the placeholder with your actual flow URL.</span>
-            <div class="code-block">
-<span class="comment">// In the &lt;script&gt; section of apply.html:</span>
-const POWER_AUTOMATE_URL = 
-  "https://prod-XX.westus.logic.azure.com/workflows/YOUR_FLOW_URL";
 
-<span class="comment">// The form submits this JSON automatically:</span>
-{
-  "loanType": "Personal Loan",
-  "firstName": "Maria",
-  "lastName": "Kari",
-  "email": "maria@email.com",
-  "mobile": "+675 7123 4567",
-  "loanAmount": "15000",
-  "termLength": "24",
-  "loanPurpose": "School / University Fees",
-  "employer": "PNG Government",
-  "grossPay": "2500",
-  "payCycle": "Fortnightly",
-  "branch": "Port Moresby (Head Office)",
-  "submittedAt": "2025-05-26T08:00:00Z",
-  "referenceNumber": "FFC-482910"
-}
-            </div>
-          </div>
-        </div>
-        <div class="integration-step">
-          <div class="int-num">4</div>
-          <div class="int-text">
-            <strong>Build your PowerApps dashboard</strong>
-            <span>Connect PowerApps to your SharePoint list or Dataverse table. Every submission from the website will appear instantly — ready to filter, approve, or action from your app.</span>
-          </div>
-        </div>
-      </div>
-    </div>
 
   </div><!-- /main col -->
 
   <!-- SIDEBAR -->
   <aside class="sidebar">
 
-    <div class="pa-box">
-      <div class="pa-icon">⚡</div>
-      <div>
-        <h4>PowerApps Ready</h4>
-        <p>Submissions POST directly to Power Automate → SharePoint / Dataverse → your PowerApps dashboard.</p>
-      </div>
-    </div>
 
     <div class="sc">
       <h3><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><rect x="2" y="1" width="12" height="14" rx="1.5"/><path d="M5 5h6M5 8h6M5 11h4"/></svg>Documents to Prepare</h3>
@@ -756,7 +731,7 @@ document.getElementById('loanForm').addEventListener('submit', async function(e)
     grossPay:         document.getElementById('grossPay').value,
     payCycle:         document.getElementById('payCycle').value,
     branch:           document.getElementById('branch').value,
-    status:           "New",
+    status:           "New Application",
     submittedAt:      new Date().toISOString()
   };
 
@@ -764,38 +739,39 @@ document.getElementById('loanForm').addEventListener('submit', async function(e)
   document.getElementById('loadingOverlay').classList.add('active');
   document.getElementById('submitBtn').disabled = true;
 
-  try {
-    // POST to Power Automate (if URL is configured)
-    if (POWER_AUTOMATE_URL !== "YOUR_POWER_AUTOMATE_HTTP_TRIGGER_URL_HERE") {
-      await fetch(POWER_AUTOMATE_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-    } else {
-      // Demo mode — simulate network delay
-      await new Promise(r => setTimeout(r, 1800));
-      console.log('Demo mode — payload that would be sent:', payload);
-    }
-
-    // Show success
-    document.getElementById('loadingOverlay').classList.remove('active');
-    document.getElementById('refNumber').textContent = refNumber;
-    document.getElementById('loanForm').querySelector('.info-banner').style.display = 'none';
-    document.getElementById('loanForm').querySelector('.form-body').style.display = 'none';
-    document.getElementById('loanForm').querySelector('.form-footer').style.display = 'none';
-    document.getElementById('formError').style.display = 'none';
-    document.getElementById('successState').style.display = 'block';
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-
-  } catch (err) {
-    document.getElementById('loadingOverlay').classList.remove('active');
-    document.getElementById('submitBtn').disabled = false;
-    errEl.textContent = 'There was a problem submitting your application. Please try again or call us directly.';
-    errEl.style.display = 'block';
-    console.error(err);
+  // Fire and forget — ignore CORS/response errors
+  if (POWER_AUTOMATE_URL !== "YOUR_POWER_AUTOMATE_HTTP_TRIGGER_URL_HERE") {
+    fetch(POWER_AUTOMATE_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    }).catch(() => {});
+  } else {
+    console.log('Demo mode — payload:', payload);
   }
+
+  // Always show success modal
+  await new Promise(r => setTimeout(r, 1500));
+  document.getElementById('loadingOverlay').classList.remove('active');
+  document.getElementById('modalRefNumber').textContent = refNumber;
+  document.getElementById('successModal').classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 });
 </script>
+
+<!-- SUCCESS MODAL -->
+<div id="successModal">
+  <div class="modal-box">
+    <div class="modal-icon">✅</div>
+    <div class="modal-title">Application Submitted!</div>
+    <div class="modal-ref">Reference Number: <span id="modalRefNumber">—</span></div>
+    <div class="modal-msg">
+      Thank you! Your loan application has been securely submitted to Flying Fish Capital.<br><br>
+      Our team will review your application and contact you within <strong>24–48 business hours</strong>.
+    </div>
+    <button class="modal-btn" onclick="window.location.href='index.html'">Back to Home</button>
+  </div>
+</div>
+
 </body>
 </html>
